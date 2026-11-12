@@ -17,7 +17,7 @@ The publishing tool's deployment record is authoritative for the live version. A
 - Searchable catalogue, category filters, sorting, a persistent product shortlist, editable quantities and an equivalent-page language switch.
 - Quote, project-brief and reorder enquiry journeys; contact and service pages; artwork/planning guides; privacy, terms and accessibility pages.
 - Actual private D1 request storage and R2 artwork storage, server validation, idempotent retries and persistent abuse limits.
-- Formspree quote notifications with bilingual details, durable attempt status, duplicate-send protection and truthful saved-request/error confirmations. **Live EN/FR submissions are accepted by Formspree; inbox receipt still requires verification.** See [Formspree verification](docs/FORMSPREE_VERIFICATION.md).
+- Formspree quote notifications with bilingual details, durable attempt status, duplicate-send protection and truthful saved-request/error confirmations. **Live EN/FR submissions are accepted by Formspree, and the owner confirmed both test emails arrived at info@promomerch.ca.** See [Formspree verification](docs/FORMSPREE_VERIFICATION.md).
 - Colour, white and black bilingual logo exports; compact wordmarks; real ICO/PNG/SVG favicons; seven illustrative merchandise image collections with original sources preserved.
 - Metadata, canonical/language alternatives, structured navigation data, localized missing-page content and responsive layouts.
 

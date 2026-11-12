@@ -18,7 +18,7 @@
 | Imagery | IMPLEMENTED / REVIEWED | Seven generated illustrative collections; originals and responsive WebPs preserved |
 | Quote endpoint | IMPLEMENTED / LOCAL PASS | Same-origin POST, D1 persistence, server validation and idempotency |
 | Artwork upload | IMPLEMENTED / LOCAL PASS | Small PNG upload saved with private quarantined status in R2/D1 |
-| Notifications | HOSTED PROVIDER ACCEPTANCE PASS | EN quote and FR reorder accepted by Formspree; identical retries preserve accepted state. Inbox receipt awaits owner confirmation. See FORMSPREE_VERIFICATION.md. |
+| Notifications | HOSTED PROVIDER ACCEPTANCE PASS | EN quote and FR reorder accepted by Formspree; identical retries preserve accepted state. Owner confirmed both notifications arrived at info@promomerch.ca. See FORMSPREE_VERIFICATION.md. |
 | Form UI | LOCAL PASS | French validation, shortlist continuity/quantity changes, EN/FR saved confirmations, mobile upload flow |
 | Responsive/browser review | PASS for checked views | Desktop 1363 px, mobile frame 390 px, tablet frame 768 px; representative templates checked |
 | Private review host | CONFIGURED | Existing project appgprj_6af541e1e5788191adfbb1e9d18c53cd; use its deployment record for publish outcome |
@@ -40,7 +40,7 @@ Local test records and uploaded QA artwork are in ignored local runtime storage.
 1. Inspect this checkout and the existing Sites project mapping; use RESUME and preserve the application and brand.
 2. Read current deployment/source state. Do not create a second Site or force-push over unrelated GitHub changes.
 3. Make owner-requested design/content refinements, using the approved identity.
-4. Verify Formspree recipient settings and actual info@promomerch.ca inbox receipt before describing notifications as email-complete.
+4. Quote-to-inbox workflow is verified for both EN/FR tests by provider acceptance, private database state and owner-confirmed receipt. Monitor unresolved notification states and maintain provider configuration.
 5. Confirm real contact routing, seller/policy details, product records, data retention and operator access.
 6. Select the live runtime/domain setup. A WHC deployment needs backend/storage adapters; the current D1/R2 Worker is not a direct PHP/static upload.
 7. Only after the live release is authorized, activate the domain, switch the canonical/public index settings, apply reviewed legacy redirects and perform search-account work.
@@ -52,4 +52,4 @@ Local test records and uploaded QA artwork are in ignored local runtime storage.
 - PASS: 22 validation/notification regressions; TypeScript; production build; English desktop (1440 px) and French mobile (390 px) Chrome checks using controlled API responses for rejection, uncertain delivery and success. Retries retained the request key; errors retained form values/shortlist; accepted requests cleared the shortlist; no browser errors or horizontal overflow in checked states.
 - CONFIGURED: Sites FORMSPREE_ENDPOINT runtime value. No secrets required and no schema migration.
 - Hosted deployment and provider acceptance: recorded in docs/FORMSPREE_VERIFICATION.md after publication.
-- Inbox receipt and Formspree recipient configuration: NOT YET VERIFIED. Endpoint acceptance must not be described as delivered email.
+- Inbox receipt: PASS by owner confirmation for both EN/FR hosted references. The provider dashboard was not separately inspected.

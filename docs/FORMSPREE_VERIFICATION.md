@@ -10,7 +10,7 @@ Verified November 12, 2026 (America/Toronto).
 - Deployment: `appgdep_6af54f79945881919058a13090a74303` — **succeeded**
 - Runtime environment revision: 1
 - Endpoint: https://formspree.io/f/xzerbjjy
-- Owner-selected receiving inbox: info@promomerch.ca; provider dashboard recipient setting and inbox receipt remain unverified by the agent.
+- Receiving inbox: info@promomerch.ca. The owner confirmed both hosted test notifications arrived on November 12, 2026. The agent did not separately inspect the Formspree dashboard.
 
 ## Checks
 
@@ -23,10 +23,10 @@ Verified November 12, 2026 (America/Toronto).
 | Hosted FR reorder | PASS — HTTP 201, reference PM-06878E6EC795, notificationStatus accepted |
 | Identical hosted retries | PASS — HTTP 200, same references, accepted/replayed |
 | Independent live D1 read | PASS — both references have accepted notification status and matching languages |
-| Actual destination inbox receipt | NOT VERIFIED — owner confirmation requested |
+| Actual destination inbox receipt | PASS — owner confirmed both PM-CE2C0B66F545 and PM-06878E6EC795 arrived at info@promomerch.ca |
 | Public domain / MerchMatters migration | NOT PERFORMED |
 
-Formspree acceptance means HTTP success plus JSON `ok: true`; it is not evidence that an email reached the inbox. No customer enquiries or uploaded customer artwork were used in these checks. Hosted test records are labelled synthetic and remain private.
+Formspree acceptance means HTTP success plus JSON `ok: true`. Inbox receipt is separately established by the owner’s confirmation above. No customer enquiries or uploaded customer artwork were used in these checks. Hosted test records are labelled synthetic and remain private.
 
 ## Runtime correction and diagnostic records
 

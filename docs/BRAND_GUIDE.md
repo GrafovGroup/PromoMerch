@@ -22,6 +22,14 @@ The production wordmark is a **manual editable-vector reconstruction** of that r
 
 It is not a pixel-exact trace, and the original source typeface has not been identified. Letter contours, spacing and descriptor typography differ slightly from the raster. The files implement the selected design direction for the website; review these details with the owner before commissioning external print or physical merchandise production. Do not describe the reconstruction as the original source artwork or a newly approved logo selection.
 
+## Letter alignment and reproducible exports
+
+The November 12 cleanup keeps the original 1A identity. The wordmark uses one baseline at y=156, capitals/ascender at y=0, and flat lowercase tops at y=44. Rounded lowercase contours deliberately extend to y=42/158 for optical alignment. Both o letters and both r letters share exactly the same outlines. The lowercase m has balanced counters; the c aperture is symmetric. The M slash is continuous, with its former inner-corner notch closed.
+
+The descriptor's visible outer edges align to x=0 and x=1211 within the wordmark group. Its font outlines are unchanged in proportion; only tracking/positioning is fitted.
+
+Run `node scripts/build-brand.mjs` from the repository root with locked dependencies installed to regenerate all eight SVGs and four transparent PNGs. Shared letter geometry lives in that script; licensed descriptor outlines live in `assets/brand/descriptor-outlines.json`. No installed font is needed.
+
 ## Colour
 
 | Role | Production value |

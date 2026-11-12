@@ -61,3 +61,7 @@ Keep owner choices, implementation defaults and verified outcomes distinct. The 
 ## November 12, 2026 — Formspree integration
 
 The owner chose info@promomerch.ca and supplied https://formspree.io/f/xzerbjjy. Preserve React/Vinext and private D1/R2 storage; forward notifications server-side after saving, with no new client SDK or duplicate submission path. Artwork remains private. Publication remains owner-private.
+
+## November 12, 2026 — retain and correct the original logo
+
+After reviewing five additional directions, the owner instructed: “lets keep the original but fix it - make sure every letters is clean & aligned.” Retain 1A Refined Slash and correct native letter outlines, spacing, baseline consistency, the M incision and aligned EN/FR descriptors. The five alternatives are not selected. The corrected assets are implemented and published on WHC; the source reference remains unchanged.

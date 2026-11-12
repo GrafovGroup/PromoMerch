@@ -59,3 +59,9 @@ Local test records and uploaded QA artwork are in ignored local runtime storage.
 The owner authorized domain connection, WHC hosting and public publication. The existing plan and registered domain were reused without purchase. Production is https://promomerch.ca. Both WHC nameservers and public resolvers return the web server address; mail records were preserved. AutoSSL covers apex and www; HTTP/www redirect to HTTPS apex.
 
 PASS: 98 live routes and canonicals, public sitemap/robots, EN desktop and FR mobile browser checks, private-path denial, real quote/artwork persistence, accepted Formspree notifications and owner-confirmed inbox receipt for PM-A2EA5FD2027E / PM-C85C73545770. Live identical retries preserved those references without sending again. A private SQLite/artwork backup was independently read and checked. See WHC_LAUNCH_VERIFICATION.md.
+
+## November 12, 2026 — logo cleanup
+
+The owner retained the original 1A identity after considering alternatives. Corrected native letter curves, m counters, repeated glyph consistency, optical spacing, the M-slash notch and descriptor-edge alignment. Regenerated all eight SVGs and four transparent PNGs from shared source.
+
+WHC LIVE PASS: all 12 public assets match source SHA-256 checksums. Live EN 1440/360 px and FR 390 px Chrome checks passed for header/footer loading, aspect ratio, no transforms, no horizontal overflow and no page errors. This was an asset-only patch; no application rebuild or quote retest was needed. The separate private Sites preview was not republished. See LOGO_CLEANUP_VERIFICATION.md.

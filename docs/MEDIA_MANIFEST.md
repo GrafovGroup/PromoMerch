@@ -98,3 +98,15 @@ The favicon is an implementation derivative of the M/slash. It is a white M on a
 - Confirmed SVG assets contain native paths and retain the selected rising M slash, aligned descriptors and transparent background.
 
 Browser placement, visual contrast, responsive cropping, network loading and locale routing must be checked in the integrated site. This manifest does not assert those application checks have passed.
+
+## November 12, 2026 — original-logo cleanup
+
+The owner reviewed five alternatives and instructed us to keep the original identity, clean every letter and align the lettering. The native vectors were corrected directly; no new generated raster concept was used. The reference board remains unchanged.
+
+- Shared baseline at y=156, cap/ascender top at y=0, and consistent rounded overshoot at y=42/158.
+- Balanced lowercase m counters, matched o/r outlines, symmetric c aperture, refined e curve and optical spacing.
+- Removed the small notch beside the M incision; the rising transparent slash retains parallel edges.
+- EN/FR descriptor outlines retain their licensed glyph proportions; tracking now aligns the visible outer edges to the 1,211-unit wordmark width.
+- All eight SVGs and four 1600 × 318 transparent PNGs use one generator: `node scripts/build-brand.mjs`. The descriptors are preserved in `assets/brand/descriptor-outlines.json`. The installed locked toolchain supplies Sharp for PNG rendering.
+
+PASS: measured native SVG baselines and descriptor extents (within 0.001 SVG unit), matching repeated letters, alpha exports, original-reference hash, and live desktop/mobile placement. See LOGO_CLEANUP_VERIFICATION.md for the asset-only WHC release.

@@ -48,6 +48,14 @@ These observations are **not PromoMerch capability evidence**. They do not prove
 - Sample availability, kitting, multi-destination delivery and company programmes remain conditional on project review. Reorders start enquiries.
 - Privacy text follows the implemented private quote/artwork flow, optional consent record and current absence of marketing analytics. Deployed behaviour, retention practice and operator access still need release verification.
 - No customer endorsements, certifications, supplier authorizations, delivery guarantees or completed migration claims were invented. Any later material claim needs an attributable source and an actual review record.
-- All 98 routes remain in the owner-private, noindex review scope. Deployment, domain activation, search submission and observed indexing are separate states; consult [PROJECT_STATUS.md](PROJECT_STATUS.md) and [SITE_MAP.md](SITE_MAP.md).
+- WHC production now serves 100 routes, with 96 indexable sitemap URLs. The separate Sites preview remains private/noindex. Deployment, search submission and observed indexing are separate states; consult [PROJECT_STATUS.md](PROJECT_STATUS.md), [SITE_MAP.md](SITE_MAP.md) and [SEARCH_SUBMISSION.md](SEARCH_SUBMISSION.md).
 
 This register contains public source references and nonconfidential status notes. Keep private supplier terms, account details, customer submissions and confidential evidence outside public client bundles and public Git history.
+
+## November 12, 2026 — MerchMatters review and reuse
+
+The owner confirmed both sites are theirs and requested improvements based on MerchMatters, followed by Google/Bing submission. Reviewed its homepage, projects, services, custom request, order and resources flows. Adopted real project examples, early service links, question-led guide links, a custom-request fallback and brief guidance. These are qualitative usability choices; no claim is made that these changes have proven conversion or ranking benefits.
+
+Two original project photos and their reliable captions were reused with explicit Merch Matters attribution; see MEDIA_MANIFEST.md for source URLs, unchanged originals and hashes. A mismatched caps/stencil image was excluded. No legacy-domain redirects, search Change of Address, automatic migration, customer announcements or new supplier claims were made.
+
+The public privacy description now accurately describes private hosted database/file storage rather than naming the earlier Cloudflare review deployment. Formspree notification handling remains unchanged. The owner has confirmed notification delivery to info@promomerch.ca; phone routing remains untested.

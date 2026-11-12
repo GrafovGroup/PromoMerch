@@ -18,6 +18,7 @@ export const routes = {
   industries: {en:"industries",fr:"secteurs"},
   coverage: {en:"coverage",fr:"couverture"},
   resources: {en:"resources",fr:"ressources"},
+  projects: {en:"projects",fr:"realisations"},
   about: {en:"about",fr:"a-propos"},
   privacy: {en:"privacy",fr:"confidentialite"},
   terms: {en:"terms",fr:"conditions"},

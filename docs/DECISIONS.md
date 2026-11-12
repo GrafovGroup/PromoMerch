@@ -65,3 +65,9 @@ The owner chose info@promomerch.ca and supplied https://formspree.io/f/xzerbjjy.
 ## November 12, 2026 — retain and correct the original logo
 
 After reviewing five additional directions, the owner instructed: “lets keep the original but fix it - make sure every letters is clean & aligned.” Retain 1A Refined Slash and correct native letter outlines, spacing, baseline consistency, the M incision and aligned EN/FR descriptors. The five alternatives are not selected. The corrected assets are implemented and published on WHC; the source reference remains unchanged.
+
+## November 12, 2026 — MerchMatters-informed production update and search submission
+
+The owner asked us to inspect their other site, MerchMatters.ca, apply its strongest useful patterns to PromoMerch.ca and submit PromoMerch to Google and Bing afterwards. Reuse the existing public WHC deployment and corrected 1A logo. Add an attributed bilingual portfolio from two reliable historical project photographs, prominent service/guide navigation, catalogue custom-enquiry paths and a concise brief checklist. Preserve quote processing and avoid unsupported stock, company-store software or client-result claims.
+
+The authorized scope includes ownership verification and sitemap/URL submissions for PromoMerch. It does not move MerchMatters or authorize Change of Address/legacy redirects. The WHC site is public; the independent Sites review target retains its private configuration. Details and actual outcomes: MERCHMATTERS_REFRESH.md and SEARCH_SUBMISSION.md.

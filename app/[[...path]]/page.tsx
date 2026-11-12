@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { categories, products, categoryPath, productPath } from "../../lib/catalog";
 import { resolvePage, type ResolvedPage } from "../../lib/page-model";
 import { site, route, t } from "../../lib/site";
+import { portfolioProjects } from "../../lib/projects";
 import { Header, Footer } from "../components/SiteShell";
 import { HomePage, CatalogPage, ProductPage, ContentView, ContactPage, QuotePage } from "../components/Pages";
 
@@ -14,6 +15,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!page) return { title: path[0] === "fr" ? "Page introuvable" : "Page not found", robots: { index: false, follow: false } };
   const enPath = page.locale === "en" ? page.path : page.alternatePath;
   const frPath = page.locale === "fr" ? page.path : page.alternatePath;
+  const portfolioImage = page.content?.id === "projects" ? portfolioProjects[0] : undefined;
+  const shareImage = portfolioImage?.image || page.product?.image || page.category?.image || page.content?.image || "/images/hero-merch.webp";
   return {
     title: page.title,
     description: page.description,
@@ -22,9 +25,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     openGraph: {
       title: `${page.title} | PromoMerch`, description: page.description, url: page.path,
       siteName: "PromoMerch", locale: page.locale === "fr" ? "fr_CA" : "en_CA", alternateLocale: page.locale === "fr" ? "en_CA" : "fr_CA", type: "website",
-      images: [{ url: page.product?.image || page.category?.image || page.content?.image || "/images/hero-merch.webp", alt: t(page.locale, "Illustrative merchandise collection", "Collection illustrative d’articles promotionnels") }],
+      images: [{ url: shareImage, alt: portfolioImage?.alt[page.locale] || t(page.locale, "Illustrative merchandise collection", "Collection illustrative d’articles promotionnels") }],
     },
-    twitter: { card: "summary_large_image", title: `${page.title} | PromoMerch`, description: page.description, images: [page.product?.image || page.category?.image || page.content?.image || "/images/hero-merch.webp"] },
+    twitter: { card: "summary_large_image", title: `${page.title} | PromoMerch`, description: page.description, images: [shareImage] },
   };
 }
 

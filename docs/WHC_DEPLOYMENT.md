@@ -69,3 +69,7 @@ Rollback restores the previous code and web rules and restarts only this app. Pr
 - [Apache RequestHeader behavior](https://httpd.apache.org/docs/2.4/mod/mod_headers.html)
 
 See WHC_LAUNCH_VERIFICATION.md for actual release evidence and any remaining limitations.
+
+## November 12, 2026 — content refresh and search verification
+
+The MerchMatters-informed release adds a bilingual portfolio and discovery/brief improvements without changing quote processing. See MERCHMATTERS_REFRESH.md for the exact archive, checksums, backup and live validation. Preserve the Google verification metadata, Bing XML file and IndexNow key file in future public releases; ownership and submission outcomes are recorded in SEARCH_SUBMISSION.md. The separate Sites preview remains private and was not republished.

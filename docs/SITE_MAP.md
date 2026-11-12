@@ -2,7 +2,7 @@
 
 ## Current release state
 
-The implemented route model contains **98 unique paths in 49 English/French pairs**. Every path in this register belongs to the owner-private review release and is **noindex, nofollow**. The [review origin](https://promomerch.dimagrafov.chatgpt.site) is configured in `lib/site.ts`. This register does not assert public deployment, search submission or indexing.
+The production route model contains **100 unique paths in 50 English/French pairs** at `https://promomerch.ca`. The 96 public content URLs are indexable and included in `/sitemap.xml`. The four quote/reorder URLs remain crawlable with **noindex, nofollow** metadata and are excluded from the sitemap. The separate Sites review build remains private/noindex. Submission outcomes are recorded in [SEARCH_SUBMISSION.md](SEARCH_SUBMISSION.md).
 
 Authority: `lib/page-model.ts` resolves routes from `lib/site.ts`, `lib/catalog.ts` and `lib/content.ts`. The inventory below was generated from `publicPagePaths()` and checked for reciprocal locale links. Update those records first when changing routes.
 
@@ -11,8 +11,8 @@ Authority: `lib/page-model.ts` resolves routes from `lib/site.ts`, `lib/catalog.
 | Core pages, including quote and reorder | 5 | 10 |
 | Category pages | 6 | 12 |
 | Product-family pages | 24 | 48 |
-| Supporting content | 14 | 28 |
-| **Total** | **49** | **98** |
+| Supporting content | 15 | 30 |
+| **Total** | **50** | **100** |
 
 ## Core pages
 
@@ -70,6 +70,7 @@ These routes describe merchandise families and selection considerations. They do
 
 | Page | English path | French path |
 | --- | --- | --- |
+| projects | `/en/projects/` | `/fr/realisations/` |
 | services | `/en/services/` | `/fr/services/` |
 | decoration | `/en/services/decoration/` | `/fr/services/personnalisation/` |
 | kitting | `/en/services/kitting-fulfilment/` | `/fr/services/assemblage-expedition/` |
@@ -87,11 +88,11 @@ These routes describe merchandise families and selection considerations. They do
 
 ## Indexing and utility boundaries
 
-- `site.publicLaunch` is `false`. Root and resolved-page metadata apply noindex/nofollow, `app/robots.ts` disallows crawling, and `app/sitemap.ts` returns an empty collection for this release.
-- Robots rules and noindex are not access controls. Owner-private review access is a separate hosting setting and must remain independently verified.
-- Quote and reorder pages remain noindex utility destinations in the current public-release branch of the metadata logic. They are omitted from the future sitemap generator.
-- The locale-independent entry route, unknown-route/404 handling, `/api/quotes/`, and in-page confirmation/error states are outside this 98-path content inventory. They are not additional indexable landing pages.
-- Before an authorized public launch, verify the live origin, canonical URLs, reciprocal language links, sitemap output, privacy setting and search controls together. No Search Console submission or observed indexing is recorded here.
+- The WHC build enables `site.publicLaunch`, production canonicals, public-content indexing and a 96-URL sitemap. The ordinary Sites build keeps the private review origin, noindex metadata and disallow rules.
+- Public robots rules allow the site and disallow `/api/`. Quote/reorder pages must be crawlable so search engines can read their noindex metadata; noindex is not a privacy control.
+- The root redirects to `/en/`. Unknown routes, `/api/quotes/`, and confirmation/error states are outside this 100-path page inventory.
+- Every page has a self-referencing canonical and reciprocal en-CA/fr-CA alternatives; x-default points to its English equivalent.
+- PASS on November 12, 2026: all 100 live paths, 50 reciprocal pairs, public sitemap, noindex utility pages, verification files and private-path denial. Search submission does not establish indexing.
 
 ## Related records
 

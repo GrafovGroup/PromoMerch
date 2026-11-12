@@ -2,11 +2,11 @@
 
 Prepared for the initial website build on 12 November 2026.
 
-## Usage and truthfulness
+## Usage and truthfulness — generated collections
 
 The seven merchandise photographs are generated editorial illustrations of product categories. They are not verified supplier products, saleable SKUs, photographs of stock, customer work, or evidence of any completed order. Use them for category discovery and merchandise inspiration. Confirm the actual product, availability, decoration, packaging and price through the quote workflow before making a commercial promise.
 
-All scenes were generated for this project with the built-in OpenAI image generation tool. The model name was not provided by that tool. No external stock photography, supplier imagery, recognizable third-party marks, people, certification symbols or customer logos were used. No text or logos were added to the merchandise. Do not use these images as evidence for environmental, technical, sourcing or certification claims.
+All scenes were generated for this project with the built-in OpenAI image generation tool. The model name was not provided by that tool. No external stock photography, supplier imagery, recognizable third-party marks, people, certification symbols or customer logos were used in these seven generated scenes. The separately sourced historical project photographs below contain the original project details. No text or logos were added to the merchandise. Do not use these images as evidence for environmental, technical, sourcing or certification claims.
 
 The source PNGs are retained without edits in `assets/generated/`. Public WebP files are format and size exports only: no objects, branding, backgrounds or colours were retouched after generation. The original tool output files also remain in the generation workspace. Repository source files are the durable copies required to reproduce the public exports.
 
@@ -110,3 +110,16 @@ The owner reviewed five alternatives and instructed us to keep the original iden
 - All eight SVGs and four 1600 × 318 transparent PNGs use one generator: `node scripts/build-brand.mjs`. The descriptors are preserved in `assets/brand/descriptor-outlines.json`. The installed locked toolchain supplies Sharp for PNG rendering.
 
 PASS: measured native SVG baselines and descriptor extents (within 0.001 SVG unit), matching repeated letters, alpha exports, original-reference hash, and live desktop/mobile placement. See LOGO_CLEANUP_VERIFICATION.md for the asset-only WHC release.
+
+## November 12, 2026 — owner-authorized Merch Matters project photography
+
+The owner identified MerchMatters.ca as their other site and requested that its useful content be applied to PromoMerch. Two matching photo/caption examples were selected from [the public projects page](https://merchmatters.ca/projects/). Original JPEGs are preserved unchanged; Sharp WebP exports use quality 86, default effort 4, original dimensions and a 640-pixel responsive version. No objects, logos, colours or backgrounds were retouched. Reproduce with `node scripts/build-project-images.mjs` using the locked toolchain; all four exports reproduce byte-for-byte.
+
+| Original retained in `assets/merchmatters/` | Public source | Original size | Original SHA-256 |
+| --- | --- | --- | --- |
+| `embroidered-vest.jpg` | `https://merchmatters.ca/legacy-assets/vests3-52481859be.jpg` | 900 × 600 | `0e13b991dd6768dec81d56042a0715e190da6e7769e7b5ded2ddf2c6062db6eb` |
+| `tie-pocket-square.jpg` | `https://merchmatters.ca/legacy-assets/allied-tie-squar-af1e65ee35.jpg` | 1058 × 1413 | `401b4007cd7edcc0e07b07cc98515629460d33b46eedd150ea7ccfe32014684b` |
+
+Public files: `/images/projects/embroidered-vest.webp` (116,554 bytes), `embroidered-vest-640.webp` (67,354 bytes), `tie-pocket-square.webp` (149,074 bytes), `tie-pocket-square-640.webp` (73,592 bytes). The quilted vest visibly carries THE WELL embroidery; the matching green tie and pocket square have no visible client mark. No client identity is inferred from filenames. These are attributed historical Merch Matters examples, not new PromoMerch case studies, testimonials, available stock or delivery guarantees.
+
+The legacy “Baseball caps” entry was excluded because its image shows round OLIVE & THYME stencils, not caps. PASS: original visual review, accurate bilingual descriptions/alt text, responsive loading, homepage/portfolio layouts and public source attribution. See MERCHMATTERS_REFRESH.md.

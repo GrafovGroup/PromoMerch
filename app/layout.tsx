@@ -7,6 +7,7 @@ export const metadata:Metadata={
  title:{default:"PromoMerch | Branded merchandise for Canadian teams",template:"%s | PromoMerch"},
  description:"Branded apparel, promotional products and gift kits for Canadian businesses, teams and events.",
  robots:site.publicLaunch?{index:true,follow:true}:{index:false,follow:false},
+ verification:site.publicLaunch?{google:"C6iRVl5_qnV8VUc1pKrSmWsfA_faqMmey1BmPUQlzgA"}:undefined,
  icons:{icon:[{url:"/favicon.svg",type:"image/svg+xml"},{url:"/favicon.ico",sizes:"any"},{url:"/icon-192.png",type:"image/png",sizes:"192x192"}],apple:"/apple-touch-icon.png",shortcut:"/favicon.ico"},
  manifest:"/site.webmanifest",
  openGraph:{siteName:"PromoMerch",type:"website",images:[{url:"/images/hero-merch.webp",width:1536,height:1024,alt:"PromoMerch merchandise collection"}]},

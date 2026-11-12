@@ -1,0 +1,17 @@
+# Install above the CloudLinux-generated Passenger/env blocks in the domain root.
+Options -Indexes
+RewriteEngine On
+RewriteRule ^ - [E=PM_CLIENT_IP:%{REMOTE_ADDR}]
+RequestHeader unset X-PromoMerch-Client-IP
+RequestHeader set X-PromoMerch-Client-IP "%{PM_CLIENT_IP}e"
+
+# Keep domain-control validation reachable for certificate issuance/renewal.
+RewriteCond %{REQUEST_URI} !^/\.well-known/(acme-challenge|pki-validation)/
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} !^promomerch\.ca$ [NC]
+RewriteRule ^ https://promomerch.ca%{REQUEST_URI} [R=308,L,NE]
+
+<IfModule mod_headers.c>
+Header always set X-Content-Type-Options "nosniff"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>

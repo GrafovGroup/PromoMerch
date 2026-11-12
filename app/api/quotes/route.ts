@@ -79,8 +79,8 @@ async function sha256(value: string | Uint8Array): Promise<string> {
 }
 
 function sourceIdentity(request: Request): string {
-  // This endpoint is served through Cloudflare Workers ingress. Trust only its
-  // single client-IP header, never user-controlled forwarded-header fallbacks.
+  // Workers supplies this header at ingress. The WHC entrypoint overwrites it
+  // from WHC's verified REMOTE_ADDR mapping before dispatch. Never trust fallbacks.
   // The route adapter can reconstruct Request and lose request.cf metadata.
   const address = request.headers.get("cf-connecting-ip")?.trim();
   if (!address || address.length > 45) return "unknown-source";

@@ -7,7 +7,7 @@ Bilingual, quote-led merchandise website for the planned PromoMerch.ca brand, bu
 - **Private review destination:** https://promomerch.dimagrafov.chatgpt.site
 - **GitHub backup:** https://github.com/GrafovGroup/PromoMerch
 - **Sites project:** `appgprj_6af541e1e5788191adfbb1e9d18c53cd`
-- **Live brand domain:** PromoMerch.ca is a launch target. This build does not activate its DNS or migrate MerchMatters.ca.
+- **Public production:** https://promomerch.ca — WHC Node 24 hosting, launched November 12, 2026. See [WHC launch verification](docs/WHC_LAUNCH_VERIFICATION.md) and [deployment instructions](docs/WHC_DEPLOYMENT.md). MerchMatters.ca remains separate.
 
 The publishing tool's deployment record is authoritative for the live version. A source commit or archive alone does not prove a deployment succeeded. The review site remains owner-private and `noindex`.
 
@@ -16,7 +16,7 @@ The publishing tool's deployment record is authoritative for the live version. A
 - Equivalent English and Québec French routes: 49 page pairs, including 24 merchandise families, six categories and 14 supporting pages in each language.
 - Searchable catalogue, category filters, sorting, a persistent product shortlist, editable quantities and an equivalent-page language switch.
 - Quote, project-brief and reorder enquiry journeys; contact and service pages; artwork/planning guides; privacy, terms and accessibility pages.
-- Actual private D1 request storage and R2 artwork storage, server validation, idempotent retries and persistent abuse limits.
+- Private SQLite request storage and filesystem artwork on WHC; D1/R2 retained for the private Sites preview. Shared server validation, idempotent retries and persistent abuse limits.
 - Formspree quote notifications with bilingual details, durable attempt status, duplicate-send protection and truthful saved-request/error confirmations. **Live EN/FR submissions are accepted by Formspree, and the owner confirmed both test emails arrived at info@promomerch.ca.** See [Formspree verification](docs/FORMSPREE_VERIFICATION.md).
 - Colour, white and black bilingual logo exports; compact wordmarks; real ICO/PNG/SVG favicons; seven illustrative merchandise image collections with original sources preserved.
 - Metadata, canonical/language alternatives, structured navigation data, localized missing-page content and responsive layouts.
@@ -27,7 +27,7 @@ The catalogue contains **product families and illustrative collection imagery**,
 
 This implementation uses **Vinext, React and TypeScript on Cloudflare Workers**, with **D1** for private quote records and **R2** for private artwork. It is prepared for the Sites runtime.
 
-The source is recoverable and can be adapted for another host. **It is not a drop-in static/PHP build for WHC.** Moving there requires a supported server runtime or a frontend export plus replacement quote/storage adapters. See [operations and portability](docs/OPERATIONS.md).
+The WHC target is implemented with `npm run build:whc`. It produces a standalone Node 24 bundle with SQLite/private artwork adapters; see [WHC operations](docs/WHC_DEPLOYMENT.md). The default build still targets the private Sites preview.
 
 ## Local setup
 

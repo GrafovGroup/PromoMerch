@@ -1,5 +1,7 @@
 # PromoMerch Decision Log
 
+**November 12, 2026:** The owner explicitly selected WHC for the domain and hosting and authorized publication. Production is now https://promomerch.ca; the private Sites review remains separate. Existing email routing and MerchMatters.ca were preserved.
+
 ## Current execution scope
 
 **Mode: `RESUME` — first approved brand build implemented**

@@ -1,12 +1,12 @@
 export type Locale = "en" | "fr";
 export const site = {
   name: "PromoMerch",
-  origin: "https://promomerch.dimagrafov.chatgpt.site",
+  origin: process.env.NEXT_PUBLIC_PROMOMERCH_HOSTING === "whc" ? "https://promomerch.ca" : "https://promomerch.dimagrafov.chatgpt.site",
   futureDomain: "https://promomerch.ca",
   phone: "(833) 696-9996",
   phoneHref: "tel:+18336969996",
   email: "info@promomerch.ca",
-  publicLaunch: false,
+  publicLaunch: process.env.NEXT_PUBLIC_PROMOMERCH_HOSTING === "whc",
 };
 export const routes = {
   home: {en:"",fr:""},

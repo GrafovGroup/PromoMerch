@@ -40,6 +40,14 @@ const localBindingConfig = {
 export default defineConfig(async ({ command }) => {
   configureToolEnvironment(process.cwd());
 
+  if (process.env.PROMOMERCH_HOSTING === "whc") {
+    return {
+      plugins: [vinext()],
+      resolve: { alias: { "cloudflare:workers": new URL("./hosting/whc/storage.mjs", import.meta.url).pathname } },
+      define: { "process.env.NEXT_PUBLIC_PROMOMERCH_HOSTING": JSON.stringify("whc") },
+    };
+  }
+
   // Wrangler snapshots its log path while the Cloudflare plugin is imported.
   const { cloudflare } = await import("@cloudflare/vite-plugin");
 

@@ -1,5 +1,7 @@
 # PromoMerch operations
 
+**Public production now runs on WHC Node 24 with private SQLite/filesystem storage.** See [WHC_DEPLOYMENT.md](WHC_DEPLOYMENT.md) for paths, ingress, backups and release procedures. The D1/R2 details below describe the private Sites deployment; validation, idempotency, notification and quarantine rules are shared.
+
 ## Scope and release evidence
 
 This document describes the quote intake implemented in this repository. It is an operator guide, not evidence that a deployment, production database check, mailbox delivery test or domain cutover has succeeded. Record those results separately in [PROJECT_STATUS.md](PROJECT_STATUS.md), with the relevant release and observed outcome.

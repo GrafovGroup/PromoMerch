@@ -1,5 +1,7 @@
 # Deployment
 
+**Current public production is WHC**, launched November 12, 2026. Follow [WHC_DEPLOYMENT.md](WHC_DEPLOYMENT.md) and [WHC_LAUNCH_VERIFICATION.md](WHC_LAUNCH_VERIFICATION.md). The workflow below applies to the separate owner-private Sites review.
+
 ## Project mapping and access
 
 | Item | Value |

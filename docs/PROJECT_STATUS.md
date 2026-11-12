@@ -10,23 +10,23 @@
 | --- | --- | --- |
 | Brand | SELECTED / IMPLEMENTED | 1A Refined Slash, navy/cobalt, aligned descriptor, no .ca in the logo |
 | Universal baseline | PRESERVED | Original universal v2.0 and project master remain unchanged |
-| Application | IMPLEMENTED | Vinext/React/TypeScript, Workers runtime |
+| Application | IMPLEMENTED | Vinext/React/TypeScript; public WHC Node 24 standalone and private Workers review |
 | EN/FR routes | PASS | 98 unique valid paths, 49 reciprocal language pairs; unknown routes rejected by the route resolver |
 | Catalogue | IMPLEMENTED | 24 families in six categories; search, filters, sort and quote shortlist |
 | Supporting content | IMPLEMENTED | 14 page pairs, including services, guides, coverage and policies |
 | Production assets | IMPLEMENTED / REVIEWED | Bilingual vector/PNG lockups and favicon set; reconstruction caveat in MEDIA_MANIFEST.md |
 | Imagery | IMPLEMENTED / REVIEWED | Seven generated illustrative collections; originals and responsive WebPs preserved |
-| Quote endpoint | IMPLEMENTED / LOCAL PASS | Same-origin POST, D1 persistence, server validation and idempotency |
-| Artwork upload | IMPLEMENTED / LOCAL PASS | Small PNG upload saved with private quarantined status in R2/D1 |
+| Quote endpoint | WHC LIVE PASS | Same-origin POST, private SQLite persistence, server validation and idempotency |
+| Artwork upload | WHC LIVE PASS | PNG upload stored outside the web root with quarantined status and 0600 permissions |
 | Notifications | HOSTED PROVIDER ACCEPTANCE PASS | EN quote and FR reorder accepted by Formspree; identical retries preserve accepted state. Owner confirmed both notifications arrived at info@promomerch.ca. See FORMSPREE_VERIFICATION.md. |
 | Form UI | LOCAL PASS | French validation, shortlist continuity/quantity changes, EN/FR saved confirmations, mobile upload flow |
 | Responsive/browser review | PASS for checked views | Desktop 1363 px, mobile frame 390 px, tablet frame 768 px; representative templates checked |
 | Private review host | CONFIGURED | Existing project appgprj_6af541e1e5788191adfbb1e9d18c53cd; use its deployment record for publish outcome |
-| PromoMerch.ca domain/DNS | NOT CHANGED | No DNS activation, transfer or domain migration performed |
+| PromoMerch.ca domain/DNS | LIVE / HTTPS PASS | WHC A record 51.161.57.68; apex/www TLS; HTTPS redirects; mail records preserved |
 | MerchMatters.ca | NOT MIGRATED | Existing site/contact continuity retained; later transition plan is separate |
-| Contact mailbox/phone routing | NOT VERIFIED | Intended display values info@promomerch.ca and (833) 696-9996 |
+| Contact mailbox/phone routing | MAILBOX PASS; PHONE NOT TESTED | Owner confirmed both WHC launch notifications at info@promomerch.ca; phone remains (833) 696-9996 |
 | Legal seller | INHERITED, VERIFY BEFORE PUBLIC LAUNCH | Facility Unlimited Corp. carried from existing business record; no unsupported entity substitution |
-| Search submission/indexing | NOT PERFORMED | Review is private/noindex, no search-console or indexing claim |
+| Search submission/indexing | CRAWL CONFIG PASS; SUBMISSION NOT PERFORMED | Production canonicals/sitemap/index settings enabled; private preview remains noindex; indexing not claimed |
 | Customer communications | NO CUSTOMER ANNOUNCEMENTS | Formspree integration tests use labelled synthetic data; see current verification record. |
 
 ## Verification records
@@ -42,8 +42,8 @@ Local test records and uploaded QA artwork are in ignored local runtime storage.
 3. Make owner-requested design/content refinements, using the approved identity.
 4. Quote-to-inbox workflow is verified for both EN/FR tests by provider acceptance, private database state and owner-confirmed receipt. Monitor unresolved notification states and maintain provider configuration.
 5. Confirm real contact routing, seller/policy details, product records, data retention and operator access.
-6. Select the live runtime/domain setup. A WHC deployment needs backend/storage adapters; the current D1/R2 Worker is not a direct PHP/static upload.
-7. Only after the live release is authorized, activate the domain, switch the canonical/public index settings, apply reviewed legacy redirects and perform search-account work.
+6. Production is WHC. Follow WHC_DEPLOYMENT.md and WHC_LAUNCH_VERIFICATION.md; preserve the separate private Sites preview.
+7. Domain activation and production indexing configuration are complete. Search-account submission and a MerchMatters migration remain separate tasks.
 
 ## November 12, 2026 — Formspree update
 
@@ -53,3 +53,9 @@ Local test records and uploaded QA artwork are in ignored local runtime storage.
 - CONFIGURED: Sites FORMSPREE_ENDPOINT runtime value. No secrets required and no schema migration.
 - Hosted deployment and provider acceptance: recorded in docs/FORMSPREE_VERIFICATION.md after publication.
 - Inbox receipt: PASS by owner confirmation for both EN/FR hosted references. The provider dashboard was not separately inspected.
+
+## November 12, 2026 — WHC launch
+
+The owner authorized domain connection, WHC hosting and public publication. The existing plan and registered domain were reused without purchase. Production is https://promomerch.ca. Both WHC nameservers and public resolvers return the web server address; mail records were preserved. AutoSSL covers apex and www; HTTP/www redirect to HTTPS apex.
+
+PASS: 98 live routes and canonicals, public sitemap/robots, EN desktop and FR mobile browser checks, private-path denial, real quote/artwork persistence, accepted Formspree notifications and owner-confirmed inbox receipt for PM-A2EA5FD2027E / PM-C85C73545770. Live identical retries preserved those references without sending again. A private SQLite/artwork backup was independently read and checked. See WHC_LAUNCH_VERIFICATION.md.

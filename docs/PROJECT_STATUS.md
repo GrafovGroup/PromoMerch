@@ -1,49 +1,46 @@
 # PromoMerch — Project Status
 
-Prepared: November 11, 2026 (America/Toronto)
+## Current mode
 
-## Actual state
+**RESUME.** The owner's subsequent “start” instruction activated the approved brand build. Application source now exists. Continue from it; do not restart branding or regenerate the universal prompt.
 
-| Area | Status | Evidence / limitation |
+## Actual implementation state
+
+| Area | State | Evidence / boundary |
 | --- | --- | --- |
-| Brand name and target domain | DECIDED | PromoMerch / PromoMerch.ca |
-| Logo direction | SELECTED | Owner chose 1A Refined Slash “for now” |
-| Selected source PNG | INCLUDED | Exact unchanged reference at assets/brand/promomerch-1a-refined-slash-reference.png |
-| Master prompt | PREPARED | MASTER_PROMPT.md, version 1.0, 24 sections |
-| Universal baseline | INCLUDED | Exact November 4 v2.0 source and alignment record |
-| GitHub destination | VERIFIED | GrafovGroup/PromoMerch; main is the default branch; repository was empty when inspected |
-| Website implementation | NOT STARTED BY THIS TASK | No application source or runtime is claimed |
-| Production vector/logo exports | NOT PRODUCED | The PNG is a concept board; production assets are future build work |
-| Hosting/domain control | NOT VERIFIED | No host selected or DNS changed by this task |
-| Mailbox/phone/quote endpoint | NOT VERIFIED | Intended contacts documented; no delivery test performed |
-| Supplier/product feed | NOT VERIFIED | Product records must be sourced during implementation |
-| EN/FR website, responsive QA and favicon set | NOT IMPLEMENTED / NOT TESTED | Requirements are in the master prompt |
-| Deployment/migration | NOT PERFORMED | No current live site changes or redirects |
-| Google/Bing setup and indexing | NOT PERFORMED | No submission or indexing claim |
-| Customer communications | NOT SENT | No external announcements authorized by this preparation task |
+| Brand | SELECTED / IMPLEMENTED | 1A Refined Slash, navy/cobalt, aligned descriptor, no .ca in the logo |
+| Universal baseline | PRESERVED | Original universal v2.0 and project master remain unchanged |
+| Application | IMPLEMENTED | Vinext/React/TypeScript, Workers runtime |
+| EN/FR routes | PASS | 98 unique valid paths, 49 reciprocal language pairs; unknown routes rejected by the route resolver |
+| Catalogue | IMPLEMENTED | 24 families in six categories; search, filters, sort and quote shortlist |
+| Supporting content | IMPLEMENTED | 14 page pairs, including services, guides, coverage and policies |
+| Production assets | IMPLEMENTED / REVIEWED | Bilingual vector/PNG lockups and favicon set; reconstruction caveat in MEDIA_MANIFEST.md |
+| Imagery | IMPLEMENTED / REVIEWED | Seven generated illustrative collections; originals and responsive WebPs preserved |
+| Quote endpoint | IMPLEMENTED / LOCAL PASS | Same-origin POST, D1 persistence, server validation and idempotency |
+| Artwork upload | IMPLEMENTED / LOCAL PASS | Small PNG upload saved with private quarantined status in R2/D1 |
+| Notifications | NOT CONFIGURED | Saved records explicitly use notification_status = not_configured |
+| Form UI | LOCAL PASS | French validation, shortlist continuity/quantity changes, EN/FR saved confirmations, mobile upload flow |
+| Responsive/browser review | PASS for checked views | Desktop 1363 px, mobile frame 390 px, tablet frame 768 px; representative templates checked |
+| Private review host | CONFIGURED | Existing project appgprj_6af541e1e5788191adfbb1e9d18c53cd; use its deployment record for publish outcome |
+| PromoMerch.ca domain/DNS | NOT CHANGED | No DNS activation, transfer or domain migration performed |
+| MerchMatters.ca | NOT MIGRATED | Existing site/contact continuity retained; later transition plan is separate |
+| Contact mailbox/phone routing | NOT VERIFIED | Intended display values info@promomerch.ca and (833) 696-9996 |
+| Legal seller | INHERITED, VERIFY BEFORE PUBLIC LAUNCH | Facility Unlimited Corp. carried from existing business record; no unsupported entity substitution |
+| Search submission/indexing | NOT PERFORMED | Review is private/noindex, no search-console or indexing claim |
+| Customer communications | NOT SENT | Form tests are synthetic and no outbound message provider is connected |
 
-The package's remote commit is identified by GitHub history and the verified task handoff. Do not hard-code a commit's own hash inside the same commit or treat an older hash as the current implementation.
+## Verification records
 
-## Scope
+See [BUILD_VALIDATION.md](BUILD_VALIDATION.md), [CONTENT_REVIEW.md](CONTENT_REVIEW.md), [MEDIA_MANIFEST.md](MEDIA_MANIFEST.md) and [OPERATIONS.md](OPERATIONS.md). Read the current Sites deployment result and current GitHub HEAD when resuming; do not infer either from an older summary.
 
-The present request is **prepare the complete master prompt and upload it to the specified repository**, based on the established universal template. A later build instruction activates APPROVED_BRAND_BUILD. A later session must inspect actual state and use RESUME if work has already begun.
+Local test records and uploaded QA artwork are in ignored local runtime storage. They are not copied to GitHub or included in the deployment archive. Source and marketing asset files are backed up separately from customer/operational data.
 
 ## Exact resume point
 
-1. Read MASTER_PROMPT.md, AGENTS.md and the linked project records.
-2. Inspect current source/branch/working changes and the selected logo board.
-3. When implementation is authorized, close material research/configuration gaps, derive faithful production assets and build the bilingual quote-led website.
-4. Verify hosting, contacts, form delivery and product data as relevant. Continue independent work when one integration is unavailable.
-5. Complete tests and source backup; handle deployment and migration within the scope then authorized.
-
-## Operational decisions still to establish
-
-- Actual domain control and hosting target, including any existing Sites project mapping.
-- Working info@promomerch.ca inbox, phone routing and chosen form provider/endpoint.
-- Verified products, decoration/fulfilment capabilities and permissioned product images.
-- Accurate legal seller/contact/policy presentation and legacy contact transition.
-- Migration sequence, timing and actual legacy URL map.
-- Analytics/search account access when release work reaches those steps.
-
-These are preparation notes, not reasons to reopen the selected brand or delay unrelated implementation once the build is requested.
-
+1. Inspect this checkout and the existing Sites project mapping; use RESUME and preserve the application and brand.
+2. Read current deployment/source state. Do not create a second Site or force-push over unrelated GitHub changes.
+3. Make owner-requested design/content refinements, using the approved identity.
+4. Connect a verified transactional email provider and confirm actual inbox receipt before describing the quote workflow as email-complete.
+5. Confirm real contact routing, seller/policy details, product records, data retention and operator access.
+6. Select the live runtime/domain setup. A WHC deployment needs backend/storage adapters; the current D1/R2 Worker is not a direct PHP/static upload.
+7. Only after the live release is authorized, activate the domain, switch the canonical/public index settings, apply reviewed legacy redirects and perform search-account work.

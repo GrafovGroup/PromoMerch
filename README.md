@@ -1,60 +1,83 @@
 # PromoMerch
 
-Website build specification for **PromoMerch.ca**, the planned new identity for the existing MerchMatters.ca merchandise business.
+Bilingual, quote-led merchandise website for the planned PromoMerch.ca brand, built from the selected **1A — Refined Slash** identity and the complete Grafov Group universal master-prompt baseline.
 
-**Selected identity:** 1A — Refined Slash.  
-**Package status:** master prompt and reference assets prepared. Website implementation, deployment, DNS changes and migration have not been performed by this preparation task.
+## Review and source
 
-## Start here
+- **Private review destination:** https://promomerch.dimagrafov.chatgpt.site
+- **GitHub backup:** https://github.com/GrafovGroup/PromoMerch
+- **Sites project:** `appgprj_6af541e1e5788191adfbb1e9d18c53cd`
+- **Live brand domain:** PromoMerch.ca is a launch target. This build does not activate its DNS or migrate MerchMatters.ca.
 
-1. Read [MASTER_PROMPT.md](MASTER_PROMPT.md), the complete project-specific Codex instruction.
-2. Review [AGENTS.md](AGENTS.md) and the [current project status](docs/PROJECT_STATUS.md).
-3. Use the selected logo reference and project records when implementing the next authorized build.
+The publishing tool's deployment record is authoritative for the live version. A source commit or archive alone does not prove a deployment succeeded. The review site remains owner-private and `noindex`.
 
-The master prompt adapts the actual **Grafov Group Universal Codex Website Launch Master Prompt v2.0**, dated November 4, 2026. The [unchanged original](docs/standards/GRAFOV_GROUP_UNIVERSAL_CODEX_MASTER_PROMPT_v2.md), [alignment map](docs/UNIVERSAL_ALIGNMENT.md) and [source provenance](docs/SOURCE_PROVENANCE.md) are included.
+## Implemented
 
-## Build instruction
+- Equivalent English and Québec French routes: 49 page pairs, including 24 merchandise families, six categories and 14 supporting pages in each language.
+- Searchable catalogue, category filters, sorting, a persistent product shortlist, editable quantities and an equivalent-page language switch.
+- Quote, project-brief and reorder enquiry journeys; contact and service pages; artwork/planning guides; privacy, terms and accessibility pages.
+- Actual private D1 request storage and R2 artwork storage, server validation, idempotent retries and persistent abuse limits.
+- Truthful saved-request confirmations. **Email notification delivery is not configured.**
+- Colour, white and black bilingual logo exports; compact wordmarks; real ICO/PNG/SVG favicons; seven illustrative merchandise image collections with original sources preserved.
+- Metadata, canonical/language alternatives, structured navigation data, localized missing-page content and responsive layouts.
 
-When ready to implement, give Codex this instruction:
+The catalogue contains **product families and illustrative collection imagery**, not a supplier inventory feed. Final models, materials, prices, branding and availability are confirmed through a quote.
 
-> Read MASTER_PROMPT.md in full and build PromoMerch.ca using its requirements and the selected 1A Refined Slash identity. Use APPROVED_BRAND_BUILD if no implementation exists; otherwise RESUME. Complete the bilingual quote-led website, verify the implemented customer journeys, maintain the project records, and commit/push authorized work to this repository. Continue independent work around unavailable external setup. Keep deployment, DNS changes and the MerchMatters migration within the scope I authorize.
+## Runtime
 
-This command is for the next authorized build. Merely storing this package is not a website deployment.
+This implementation uses **Vinext, React and TypeScript on Cloudflare Workers**, with **D1** for private quote records and **R2** for private artwork. It is prepared for the Sites runtime.
 
-## Business and website direction
+The source is recoverable and can be adapted for another host. **It is not a drop-in static/PHP build for WHC.** Moving there requires a supported server runtime or a frontend export plus replacement quote/storage adapters. See [operations and portability](docs/OPERATIONS.md).
 
-- Direct branded merchandise provider serving Canadian businesses, teams, institutions and events.
-- Team apparel, event merchandise, corporate gifts and employee kits.
-- Quote-led catalogue, multi-product shortlist, project-brief enquiry and reorder path.
-- Canadian English and Québec-appropriate French from the first complete release.
-- Navy/cobalt wordmark, wide image-rich layouts, uppercase navigation/buttons, rounded buttons and visible EN/FR control.
-- Useful reviewed content and geographic coverage, with factual product data and no mass thin location pages.
-- Verified form delivery, responsive/accessibility checks, full favicon coverage, source recovery and truthful deployment/search statuses.
+## Local setup
 
-## Package
+Use Node 22.13 or newer and the committed lockfile. In the managed Sites environment, use the Sites dependency helper and preview workflow. In an ordinary development checkout:
 
-| File | Purpose |
+```sh
+npm ci
+npm run build
+```
+
+Generate a new migration only when the schema changes:
+
+```sh
+npm run db:generate
+```
+
+After the first build, apply the committed initial migration to the local binding:
+
+```sh
+node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js d1 execute DB --local --config dist/server/wrangler.json --persist-to .wrangler/state --file drizzle/0000_tired_weapon_omega.sql
+```
+
+For the managed review browser, use `sites-preview start` with this checkout's absolute path; use its exact returned URL. Sites applies the committed migrations to the hosted binding during publication.
+
+```sh
+node node_modules/typescript/bin/tsc --noEmit
+node --experimental-strip-types scripts/test-quote.mjs
+npm run lint
+```
+
+Keep customer submissions, artwork, secrets, local database files, build outputs and environment credentials outside Git. The public `assets/` directory contains brand and generated marketing sources, never uploaded customer artwork.
+
+## Project records
+
+| Record | Purpose |
 | --- | --- |
-| [MASTER_PROMPT.md](MASTER_PROMPT.md) | Full implementation brief |
-| [AGENTS.md](AGENTS.md) | Repository working instructions |
-| [Universal v2.0 source](docs/standards/GRAFOV_GROUP_UNIVERSAL_CODEX_MASTER_PROMPT_v2.md) | Exact inherited baseline |
-| [UNIVERSAL_ALIGNMENT.md](docs/UNIVERSAL_ALIGNMENT.md) | Mapping and brand-specific overrides |
-| [PROJECT_BRIEF.md](docs/PROJECT_BRIEF.md) | Commercial model and known/unknown facts |
-| [BRAND_GUIDE.md](docs/BRAND_GUIDE.md) | Selected identity and production asset requirements |
-| [DECISIONS.md](docs/DECISIONS.md) | Owner decisions and implementation defaults |
-| [MERCHMATTERS_MIGRATION.md](docs/MERCHMATTERS_MIGRATION.md) | Transition procedure and readiness record |
-| [PROJECT_STATUS.md](docs/PROJECT_STATUS.md) | Actual state and resume point |
-| [SOURCE_PROVENANCE.md](docs/SOURCE_PROVENANCE.md) | Version, source and integrity record |
+| [MASTER_PROMPT.md](MASTER_PROMPT.md) | Full inherited project brief and delivery requirements |
+| [AGENTS.md](AGENTS.md) | Instructions for subsequent work |
+| [PROJECT_STATUS.md](docs/PROJECT_STATUS.md) | Actual implementation state and resume point |
+| [DECISIONS.md](docs/DECISIONS.md) | Owner choices and implementation decisions |
+| [BUILD_VALIDATION.md](docs/BUILD_VALIDATION.md) | Checks performed and practical limitations |
+| [OPERATIONS.md](docs/OPERATIONS.md) | Quote storage, migrations, uploads, mail integration and hosting portability |
+| [MEDIA_MANIFEST.md](docs/MEDIA_MANIFEST.md) | Asset provenance, hashes, exports and logo fidelity |
+| [CONTENT_REVIEW.md](docs/CONTENT_REVIEW.md) | Bilingual content and business-claim review |
+| [MERCHMATTERS_MIGRATION.md](docs/MERCHMATTERS_MIGRATION.md) | Later legacy transition procedure |
+| [Universal baseline](docs/standards/GRAFOV_GROUP_UNIVERSAL_CODEX_MASTER_PROMPT_v2.md) | Unchanged November 4 universal v2.0 source |
+| [UNIVERSAL_ALIGNMENT.md](docs/UNIVERSAL_ALIGNMENT.md) | Baseline mapping and project-specific choices |
 
-## Selected visual reference
+## Brand and launch dependencies
 
-![PromoMerch 1A Refined Slash concept reference](assets/brand/promomerch-1a-refined-slash-reference.png)
+The original selected concept board is unchanged at `assets/brand/promomerch-1a-refined-slash-reference.png`. Production vectors are an editable reconstruction of that direction, with minor contour/spacing differences documented in the media manifest. The English descriptor is **BRANDED MERCHANDISE**; the French implementation uses **ARTICLES PROMOTIONNELS**.
 
-The image is the unchanged selected **raster concept board**. It includes a presentation title, white background and smaller monochrome sample. It is not a transparent production logo or a vector asset. The build must create faithful production variants while preserving this source.
-
-## External setup to verify during the build
-
-The intended contacts are **info@promomerch.ca** and **(833) 696-9996**. Domain control, hosting, mailbox operation, form endpoint, supplier/product records and legal details still need relevant verification. Existing MerchMatters contact and legal statements are recorded for transition planning.
-
-There is no application runtime or build command yet: this repository starts with the approved build brief and assets. Add actual setup/build/deployment instructions when implementation exists. Do not report the website live from the presence of this package.
-
+Before a customer launch: verify the contact inbox and phone routing, connect and test email notifications, confirm the legal seller and operational policies, finalize the real product/supplier catalogue, and authorize the chosen public hosting/domain setup. The MerchMatters migration, redirects, search-account submissions and customer announcements remain separate release work.

@@ -1,0 +1,12 @@
+{
+  "name": "PromoMerch",
+  "short_name": "PromoMerch",
+  "start_url": "/en/",
+  "display": "browser",
+  "background_color": "#faf9f6",
+  "theme_color": "#062a54",
+  "icons": [
+    {"src": "/icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png"}
+  ]
+}

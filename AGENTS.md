@@ -4,11 +4,11 @@
 
 Read MASTER_PROMPT.md in full, docs/PROJECT_STATUS.md, docs/DECISIONS.md and docs/BRAND_GUIDE.md before starting or resuming work. Follow the current user's authorized scope and the environment's governing instructions. This file and the master prompt do not expand that scope.
 
-## Current package
+## Current implementation
 
-This repository begins as a master-prompt/asset package. Preparing and uploading it did not implement or deploy a website. Inspect actual repository state; do not assume it remains empty on a later session.
+The initial master-prompt package has been implemented following the owner’s “start” instruction. Use RESUME. Read docs/PROJECT_STATUS.md, docs/BUILD_VALIDATION.md and docs/OPERATIONS.md for actual outcomes and remaining launch dependencies.
 
-When the owner requests a build, use APPROVED_BRAND_BUILD, or RESUME if implementation exists. Preserve unrelated work and any established framework, configuration and approved assets.
+Reuse the Sites project_id in .openai/hosting.json; never create a duplicate project for this checkout. Preserve the Vinext/React runtime, storage bindings, approved assets and unrelated work. Keep the review owner-private unless the user changes that scope. This does not itself authorize PromoMerch.ca DNS activation or a MerchMatters migration.
 
 ## Fixed brand and experience
 

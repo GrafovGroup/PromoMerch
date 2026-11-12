@@ -2,9 +2,9 @@
 
 ## Current execution scope
 
-**Mode: `PREPARATION_AND_GITHUB_UPLOAD`**
+**Mode: `RESUME` — first approved brand build implemented**
 
-The current request is to prepare the complete website master-prompt package and upload it to `grafovgroup/promomerch.git`. This record does not report a completed website build, deployment, domain configuration, email setup, or search-engine submission. Record those outcomes separately if they are later authorized and verified.
+The master-prompt package was prepared and uploaded first. The owner then instructed “start”, activating the selected-brand website build. The application and a private Sites review destination are now prepared. Domain activation, email delivery, the legacy migration and search submission remain separate verified release steps.
 
 ## Confirmed decisions
 
@@ -39,10 +39,19 @@ Packaged unchanged at:
 
 `assets/brand/promomerch-1a-refined-slash-reference.png`
 
-This presentation board is the selected visual reference. It has not been cropped, recreated, converted into vector artwork, or promoted to a production logo. Preserve the source and packaged copy; add future production assets as separate files.
+This presentation board remains the unchanged selected visual reference. Production files were added separately under public/brand/. They are a manual editable-vector reconstruction, not an exact trace or an identified original typeface; see MEDIA_MANIFEST.md.
 
-## Next authorized build stage
+## Implementation choices
 
-If the owner subsequently instructs the team to build, proceed directly with the selected identity and the master prompt. Derive the production colour, white, monochrome, compact, and favicon assets, then review fidelity against 1A before broad integration. A new five-concept logo-selection round is unnecessary.
+- **Runtime:** Vinext/React/TypeScript in the Sites Workers environment. This provides a real private D1/R2 quote workflow for the review site. WHC migration requires equivalent storage/server adapters and is not claimed complete.
+- **Review audience:** owner-private. publicLaunch stays false, with noindex metadata and disallow rules. No custom-domain or MerchMatters DNS work is included.
+- **Catalogue:** 24 useful product families, four per category. No fabricated stock feed, supplier SKU, price or delivery promise.
+- **Commercial flow:** quote/brief/reorder enquiry; no checkout or payment collection. An order is confirmed later through the business process.
+- **Language:** complete English/French page and form data. ARTICLES PROMOTIONNELS is the implemented French descriptor, retained as a translation choice for owner review.
+- **Logo:** editable reconstructed vectors preserve the 1A direction; original concept board remains byte-for-byte unchanged.
+- **Imagery:** seven generated studio collections without third-party logos, used as illustrations. Originals are source assets; WebPs are the public delivery assets.
+- **Operations:** store requests privately and show a saved reference only after persistence. Do not claim email delivery; notification_status stays not_configured until a real provider is integrated and tested.
+- **Privacy:** personal form fields are not persisted in browser storage. Only catalogue IDs/quantities are stored locally. Optional marketing preference is separate and defaults off.
+- **Retention:** no arbitrary deletion policy imposed. Quarantined artwork and orphan reconciliation need an owner-approved operating process before public rollout.
 
-Keep decision status explicit: distinguish owner selections, proposed defaults, implementation choices, verified results, and unresolved operational dependencies. Update this log when a decision changes, recording what changed and why without adding unrelated private history.
+Keep owner choices, implementation defaults and verified outcomes distinct. The current implementation does not authorize a brand-domain cutover, announcements or live legacy redirects.

@@ -1,0 +1,35 @@
+"use client";
+import {useEffect,useRef,useState} from "react";
+import {usePathname} from "next/navigation";
+import {Menu,X,ShoppingBag,Phone,Check,MapPin} from "lucide-react";
+import {route,t,site,type Locale} from "../../lib/site";
+import {readQuote} from "./ShopControls";
+export function Header({locale,alternatePath}:{locale:Locale,alternatePath:string}){
+ const [open,setOpen]=useState(false),[count,setCount]=useState(0);
+ const activePath=(usePathname()||"/").replace(/\/?$/, "/");
+ const menuRef=useRef<HTMLDivElement>(null),buttonRef=useRef<HTMLButtonElement>(null);
+ useEffect(()=>{const update=()=>setCount(readQuote().length);update();window.addEventListener("promomerch-quote-change",update);window.addEventListener("storage",update);return()=>{window.removeEventListener("promomerch-quote-change",update);window.removeEventListener("storage",update);};},[]);
+ useEffect(()=>{if(!open)return;const old=document.body.style.overflow;document.body.style.overflow="hidden";menuRef.current?.querySelector<HTMLAnchorElement>("a")?.focus();
+  const key=(e:KeyboardEvent)=>{if(e.key==="Escape"){setOpen(false);buttonRef.current?.focus();}if(e.key==="Tab"){const items=Array.from(menuRef.current?.querySelectorAll<HTMLElement>("a,button")||[]);const first=items[0],last=items[items.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}}};document.addEventListener("keydown",key);return()=>{document.body.style.overflow=old;document.removeEventListener("keydown",key);};},[open]);
+ const nav=[
+ [route(locale,"products"),t(locale,"PRODUCTS","PRODUITS")],
+ [locale==="en"?"/en/apparel/":"/fr/vetements/",t(locale,"APPAREL","VÊTEMENTS")],
+ [locale==="en"?"/en/gifts-kits/":"/fr/cadeaux-coffrets/",t(locale,"GIFTS & KITS","CADEAUX ET COFFRETS")],
+ [route(locale,"services"),"SERVICES"],[route(locale,"industries"),t(locale,"INDUSTRIES","SECTEURS")],[route(locale,"contact"),"CONTACT"]
+ ];
+ return <><a href="#main-content" className="skip-link">{t(locale,"Skip to content","Passer au contenu")}</a>
+ <div className="utility-bar"><div className="container utility-inner"><span><MapPin size={13}/>{t(locale,"GOOD MERCH. ACROSS CANADA.","DES ARTICLES QUI VOYAGENT AU CANADA.")}</span><div><a href={site.phoneHref}>{site.phone}</a><span className="utility-divider"/><a className="language-switch" href={alternatePath} hrefLang={locale==="en"?"fr-CA":"en-CA"} aria-label={locale==="en"?"Voir cette page en français":"View this page in English"}><span className={locale==="en"?"active":""}>EN</span><span>/</span><span className={locale==="fr"?"active":""}>FR</span></a></div></div></div>
+ <header className="site-header"><div className="container header-inner"><a className="brand" href={route(locale,"home")} aria-label={t(locale,"PromoMerch home","Accueil PromoMerch")}><img src={`/brand/logo-${locale}.svg`} alt="PromoMerch" width={250} height={61}/></a>
+ <nav className="desktop-nav" aria-label={t(locale,"Main navigation","Navigation principale")}>{nav.map(([href,label])=><a key={href} href={href} aria-current={activePath===href?"page":undefined}>{label}</a>)}</nav>
+ <div className="header-actions"><a className="quote-bag" href={route(locale,"quote")} aria-label={t(locale,`Quote list, ${count} ${count===1?"item":"items"}`,`Sélection, ${count} ${count===1?"article":"articles"}`)}><ShoppingBag size={22}/>{count>0&&<span>{count}</span>}</a><a className="button button-primary header-quote" href={route(locale,"quote")}>{t(locale,"GET A QUOTE","SOUMISSION")}</a><button className="menu-toggle" ref={buttonRef} onClick={()=>setOpen(!open)} aria-expanded={open} aria-controls="mobile-menu" aria-label={t(locale,open?"Close menu":"Open menu",open?"Fermer le menu":"Ouvrir le menu")}>{open?<X/>:<Menu/>}</button></div></div></header>
+ {open&&<div className="mobile-menu" id="mobile-menu" ref={menuRef} role="dialog" aria-modal="true" aria-label={t(locale,"Navigation","Navigation")}><div className="mobile-menu-title"><span>{t(locale,"MAKE YOUR MARK","À VOTRE IMAGE")}</span><button onClick={()=>{setOpen(false);buttonRef.current?.focus();}} aria-label={t(locale,"Close menu","Fermer le menu")}><X/></button></div><nav>{nav.map(([href,label])=><a key={href} href={href} aria-current={activePath===href?"page":undefined}>{label}</a>)}</nav><a className="button button-primary" href={route(locale,"quote")}>{t(locale,"REQUEST A QUOTE","DEMANDER UNE SOUMISSION")}</a><a className="mobile-phone" href={site.phoneHref}><Phone size={18}/>{site.phone}</a></div>}
+ </>;
+}
+export function Footer({locale}:{locale:Locale}){
+ const groups=[
+ {title:t(locale,"THE COLLECTION","LA COLLECTION"),links:[[locale==="en"?"/en/apparel/":"/fr/vetements/",t(locale,"Apparel","Vêtements")],[locale==="en"?"/en/drinkware/":"/fr/bouteilles-et-tasses/",t(locale,"Drinkware","Bouteilles et tasses")],[locale==="en"?"/en/bags/":"/fr/sacs/",t(locale,"Bags","Sacs")],[locale==="en"?"/en/gifts-kits/":"/fr/cadeaux-coffrets/",t(locale,"Gifts & kits","Cadeaux et coffrets")],[route(locale,"products"),t(locale,"All products","Tous les articles")]]},
+ {title:t(locale,"YOUR NEXT PROJECT","VOTRE PROJET"),links:[[route(locale,"services"),t(locale,"Services","Services")],[route(locale,"events"),t(locale,"Event merchandise","Articles événementiels")],[route(locale,"industries"),t(locale,"Industries","Secteurs")],[route(locale,"reorder"),t(locale,"Request a reorder","Demander une nouvelle commande")],[route(locale,"coverage"),t(locale,"Canadian coverage","Couverture au Canada")]]},
+ {title:t(locale,"GOOD TO KNOW","À SAVOIR"),links:[[route(locale,"about"),t(locale,"About PromoMerch","À propos")],[route(locale,"resources"),t(locale,"Merch guides","Guides pratiques")],[route(locale,"artwork"),t(locale,"Artwork guide","Guide des fichiers")],[route(locale,"contact"),"Contact"]]}
+ ];
+ return <footer className="site-footer"><div className="container"><div className="footer-top"><div className="footer-brand"><a href={route(locale,"home")}><img src={`/brand/logo-white-${locale}.svg`} alt="PromoMerch" width={280} height={70}/></a><p>{t(locale,"Thoughtfully chosen. Proudly branded.\nMade for your people.","Bien choisis. À votre image.\nPensés pour votre monde.")}</p><a href={site.phoneHref}>{site.phone}</a><a href={`mailto:${site.email}`}>{site.email}</a></div>{groups.map(g=><div className="footer-links" key={g.title}><h2>{g.title}</h2>{g.links.map(([href,label])=><a href={href} key={href}>{label}</a>)}</div>)}</div><div className="footer-bottom"><span>© {new Date().getFullYear()} PromoMerch. {t(locale,"All rights reserved.","Tous droits réservés.")}</span><div><a href={route(locale,"privacy")}>{t(locale,"Privacy","Confidentialité")}</a><a href={route(locale,"terms")}>{t(locale,"Terms","Conditions")}</a><a href={route(locale,"accessibility")}>{t(locale,"Accessibility","Accessibilité")}</a></div><span className="footer-canada"><Check size={14}/>{t(locale,"Made for Canadian brands","Pour les marques d’ici")}</span></div></div></footer>;
+}

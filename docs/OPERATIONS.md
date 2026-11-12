@@ -4,7 +4,7 @@
 
 This document describes the quote intake implemented in this repository. It is an operator guide, not evidence that a deployment, production database check, mailbox delivery test or domain cutover has succeeded. Record those results separately in [PROJECT_STATUS.md](PROJECT_STATUS.md), with the relevant release and observed outcome.
 
-The implementation saves enquiries and optional artwork. It does not place orders, take payments, send email or provide an operator dashboard.
+The implementation saves enquiries and optional artwork. It forwards quote notifications to Formspree after saving. It does not place orders, take payments or provide an operator dashboard.
 
 ## Runtime and storage
 
@@ -28,7 +28,7 @@ The private `quote_requests` table stores:
 - Language, enquiry/reorder mode, name, email, organization and optional phone.
 - A JSON payload containing the project brief, selected product IDs and localized product-name snapshot, quantities, delivery preferences, optional postal code and CAD budget, reorder details and consent choices.
 - Optional artwork object key, cleaned original filename, detected format, size and review status.
-- `status = received`, `notification_status = not_configured`, marketing preference and a UTC creation timestamp.
+- `status = received`, a durable `notification_status`, marketing preference and a UTC creation timestamp.
 
 The contact fields also appear in the JSON payload. A later export, correction or deletion procedure must account for both representations and the linked artwork.
 
@@ -69,7 +69,7 @@ The request body is capped at 6 MiB. Multipart JSON is capped at 32,000 characte
 | `429` | A rate limit was reached; response includes `Retry-After: 3600`. |
 | `503` | Required storage is unavailable or a successful save could not be confirmed. |
 
-A save response includes `notificationStatus: "not_configured"`. It does not establish mailbox receipt, artwork approval, a price commitment or an order.
+A save response includes `notificationStatus`. Only `accepted` means Formspree acknowledged the notification; it does not establish inbox receipt, artwork approval, a price commitment or an order. Other statuses show a saved-reference warning and preserve the form and shortlist.
 
 An uncertain storage response can occur after a write committed. Keep the same idempotency key for an unchanged retry. The browser does this automatically, including after its 30-second timeout. Do not instruct a customer to generate repeated new requests merely to check whether an earlier one arrived.
 
@@ -150,23 +150,36 @@ When adding a deletion process, cover the main columns, JSON payload, linked obj
 
 Decide the backup/restore method and test it with controlled data in the relevant environment. This document does not claim that a production backup or restore has been verified.
 
-## Connecting email notifications
+## Formspree notifications
 
-**No mail provider or mailbox delivery is connected.** No operator alert, customer acknowledgement, newsletter subscription or marketing email is sent by this implementation. Displaying `info@promomerch.ca` on the website does not verify that the mailbox receives mail.
+The owner supplied `https://formspree.io/f/xzerbjjy` and selected `info@promomerch.ca` on November 12, 2026. `FORMSPREE_ENDPOINT` is a server-side runtime setting. The endpoint ID is public configuration, not a secret. The recipient is controlled in Formspree's dashboard; source code cannot verify or change it.
 
-An email integration requires:
+The existing React form posts to `/api/quotes`. After validation and private persistence, the Worker sends JSON to Formspree with `Accept: application/json`. This adapts the React/AJAX integration to the existing backend; the browser does not use a second `useForm` submission path. No additional package is required.
 
-- An owner-approved destination mailbox, verified sender/domain configuration, and a provider supported by the deployed runtime.
-- Server-side credentials in the hosting secret/environment configuration, never in browser code, Git or the hosting manifest.
-- A delivery design that saves the quote first, then queues/retries notification separately. Add a durable outbox or equivalent mechanism; the current code has none.
-- Delivery idempotency tied to the saved quote ID so request retries do not send duplicate alerts.
-- Private operational state for attempts, provider message identifiers and failures. Do not change `notification_status` to `sent` merely because a request was saved.
-- Controlled tests that separately establish endpoint acceptance, provider acceptance and actual inbox receipt, including failure/retry behavior.
-- A clear distinction between request-related contact and optional marketing. The unchecked-by-default marketing choice records preference; it is not a mailing-list integration or unsubscribe system.
+The notification includes the reply-to `email`, name, organization, phone, localized subject, saved reference, language, product names/IDs/quantities, project brief, CAD budget/basis, delivery preferences, reorder details and separate consent choices. Artwork is described as privately held for review. File bytes, filenames, bucket keys, service credentials and request idempotency keys are not sent.
 
-For the Sites Worker runtime, choose an HTTP-based mail API or other supported service binding. Do not assume that a conventional raw-TCP SMTP client will run here. Review message content to minimize personal data and keep unreviewed artwork out of attachments.
+The saved quote row is the durable notification record. An atomic conditional update claims each attempt before sending. No schema migration is needed.
 
-Until notification delivery exists, the UI must continue to confirm only that the request was received and provide its saved reference. Operators need a separate monitored process for reading the private queue.
+| State | Meaning and recovery |
+| --- | --- |
+| `not_configured` | Endpoint absent. Saved request remains available to operators. |
+| `pending` | Quote saved; notification not yet claimed. An identical retry can claim it. |
+| `submitting` | Claimed by a request. Concurrent retries do not send again. A worker termination can leave this state requiring reconciliation. |
+| `accepted` | Formspree returned successful HTTP status and JSON `ok: true`. Identical retries do not send again. This is not inbox-receipt evidence. |
+| `failed` | Definite 4xx rejection or invalid endpoint configuration. An unchanged customer retry may make another attempt using the same quote reference. Fix dashboard/endpoint settings first when applicable. |
+| `unknown` | Network timeout, 5xx, malformed acknowledgement, or failed state persistence. Do not automatically resend: reconcile in Formspree using the reference. |
+
+Requests use a 10-second provider timeout, disallow redirects and only accept HTTPS Formspree `/f/` URLs. The existing source-attempt limit also bounds retries. No background scheduler, automatic backlog drain or customer autoresponder is added. Operators must monitor unresolved records through approved private tooling. For an uncertain attempt, verify the Formspree submission before changing its state or replaying; no exactly-once external-delivery guarantee is claimed.
+
+In Formspree, verify the form's email action targets **info@promomerch.ca**, complete any recipient verification, and check spam/domain/captcha settings against the actual hosted request. The server route does not invent a browser captcha token. If Formspree requires one, keep the request saved and resolve the provider configuration or implement its supported challenge flow. Check account quota and inbox receipt before public launch.
+
+Optional marketing consent is recorded, not connected to a marketing list. The EN/FR privacy notice identifies Formspree's processing of contact/project details.
+
+Official references checked November 12, 2026:
+- https://github.com/formspree/formspree-js/tree/main/packages/formspree-react
+- https://formspree.io/blog/type-safe-form-pipeline/
+- https://help.formspree.io/articles/building-your-form/special-fields
+- https://help.formspree.io/articles/form-and-project-settings/changing-a-form-email-address/
 
 ## WHC and other hosting targets
 

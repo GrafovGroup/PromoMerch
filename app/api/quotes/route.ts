@@ -4,6 +4,7 @@ import { getDb } from "../../../db";
 import { quoteRequests } from "../../../db/schema";
 import { products } from "../../../lib/catalog";
 import { inspectArtwork, validateQuote, type QuoteLocale } from "../../../lib/quote-validation";
+import { notifySavedQuote, type NotificationStatus } from "../../../lib/quote-notification";
 
 export const dynamic = "force-dynamic";
 
@@ -105,8 +106,8 @@ async function consumeLimit(database: D1Database, key: string, maximum: number, 
   return Boolean(row && row.count <= maximum);
 }
 
-function success(reference: string, replayed = false) {
-  return reply({ ok: true, reference, status: "received", notificationStatus: "not_configured", replayed }, replayed ? 200 : 201);
+function success(reference: string, notificationStatus: NotificationStatus, replayed = false) {
+  return reply({ ok: true, reference, status: "received", notificationStatus, replayed }, replayed ? 200 : 201);
 }
 
 export async function POST(request: Request) {
@@ -163,6 +164,12 @@ export async function POST(request: Request) {
     return reply({ ok: false, code: "validation", message: messages[locale].invalid, errors: checked.errors }, 400);
   }
   const data = checked.data;
+  const snapshot = {
+    ...data,
+    items: data.items.map((line) => ({ ...line, name: products.find((product) => product.id === line.id)?.name })),
+  };
+  const confirmSaved = async (reference: string, replayed = false) => success(reference,
+    await notifySavedQuote(env.DB!, env.FORMSPREE_ENDPOINT, reference, snapshot, Boolean(artwork)), replayed);
   let fileBytes: Uint8Array | null = null;
   let fileInfo: { contentType: string; extension: string } | null = null;
   if (artwork) {
@@ -186,7 +193,7 @@ export async function POST(request: Request) {
     }).from(quoteRequests).where(eq(quoteRequests.idempotencyKey, data.idempotencyKey)).limit(1);
     if (prior.length) {
       return prior[0].payloadHash === payloadHash
-        ? success(prior[0].reference, true)
+        ? await confirmSaved(prior[0].reference, true)
         : reply({ ok: false, code: "idempotency_conflict", message: messages[locale].conflict }, 409);
     }
 
@@ -207,13 +214,6 @@ export async function POST(request: Request) {
         customMetadata: { reviewStatus: "unreviewed", detectedContentType: fileInfo.contentType },
       });
     }
-    const snapshot = {
-      ...data,
-      items: data.items.map((line) => ({
-        ...line,
-        name: products.find((product) => product.id === line.id)?.name,
-      })),
-    };
     try {
       insertAttempted = true;
       await db.insert(quoteRequests).values({
@@ -225,7 +225,7 @@ export async function POST(request: Request) {
         artworkContentType: fileInfo?.contentType ?? null,
         artworkBytes: artwork?.size ?? null,
         artworkReviewStatus: artwork ? "quarantined_unreviewed" : null,
-        status: "received", notificationStatus: "not_configured",
+        status: "received", notificationStatus: env.FORMSPREE_ENDPOINT ? "pending" : "not_configured",
         marketingConsent: data.marketingConsent, createdAt: new Date(now).toISOString(),
       });
     } catch (error) {
@@ -243,12 +243,12 @@ export async function POST(request: Request) {
       storedKey = null;
       if (concurrent.length) {
         return concurrent[0].payloadHash === payloadHash
-          ? success(concurrent[0].reference, true)
+          ? await confirmSaved(concurrent[0].reference, true)
           : reply({ ok: false, code: "idempotency_conflict", message: messages[locale].conflict }, 409);
       }
       throw error;
     }
-    return success(reference);
+    return await confirmSaved(reference);
   } catch {
     // If reconciliation itself fails after an insert attempt, the file may
     // belong to a committed quote. Retain it privately for later reconciliation.

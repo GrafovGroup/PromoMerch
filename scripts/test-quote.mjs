@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import ts from "typescript";
+import { formspreePayload, notifySavedQuote, sendToFormspree } from "../lib/quote-notification.ts";
 import {
   inspectArtwork, MAX_ARTWORK_BYTES, todayInToronto, validateQuote,
 } from "../lib/quote-validation.ts";
@@ -134,14 +135,24 @@ const routeCode = ts.transpileModule(routeSource, {
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
 }).outputText;
 
-function routeHarness(insertMode = "normal") {
-  const state = { records: new Map(), files: new Map(), deleted: [], rates: new Map(), reads: 0, rateCalls: 0 };
+function routeHarness(insertMode = "normal", notification = null) {
+  const state = { records: new Map(), files: new Map(), deleted: [], rates: new Map(), reads: 0, rateCalls: 0, notifications: [] };
   const database = {
     prepare(statement) {
       return {
         bind(...values) {
           return {
             async first() {
+              if (statement.startsWith("UPDATE quote_requests")) {
+                const row = [...state.records.values()].find(row => row.reference === values[0]);
+                if (!row || !["pending", "failed", "not_configured"].includes(row.notificationStatus)) return null;
+                row.notificationStatus = "submitting";
+                return { reference: row.reference };
+              }
+              if (statement.startsWith("SELECT notification_status")) {
+                const row = [...state.records.values()].find(row => row.reference === values[0]);
+                return row ? { notification_status: row.notificationStatus } : null;
+              }
               assert.match(statement, /^INSERT INTO quote_rate_limits/);
               state.rateCalls++;
               const [key, windowStart] = values;
@@ -150,7 +161,14 @@ function routeHarness(insertMode = "normal") {
               state.rates.set(key, { windowStart, count });
               return { count };
             },
-            async run() { return { success: true }; },
+            async run() {
+              if (statement.startsWith("UPDATE quote_requests")) {
+                if (notification?.failStatusWrite) throw new Error("State acknowledgement unavailable");
+                const row = [...state.records.values()].find(row => row.reference === values[1]);
+                if (row?.notificationStatus === "submitting") row.notificationStatus = values[0];
+              }
+              return { success: true };
+            },
           };
         },
       };
@@ -184,6 +202,7 @@ function routeHarness(insertMode = "normal") {
   const modules = {
     "cloudflare:workers": { env: {
       DB: database,
+      FORMSPREE_ENDPOINT: notification ? "https://formspree.io/f/xzerbjjy" : undefined,
       BUCKET: {
         async put(key, bytes) { state.files.set(key, bytes); },
         async delete(key) { state.deleted.push(key); state.files.delete(key); },
@@ -194,6 +213,12 @@ function routeHarness(insertMode = "normal") {
     "../../../db/schema": { quoteRequests: new Proxy({}, { get: (_, key) => String(key) }) },
     "../../../lib/catalog": { products: [{ id: "everyday-tees", name: { en: "Everyday tees", fr: "T-shirts" } }] },
     "../../../lib/quote-validation": { inspectArtwork, validateQuote },
+    "../../../lib/quote-notification": { notifySavedQuote: (...args) => notifySavedQuote(...args, async (url, options) => {
+      state.notifications.push({ url, payload: JSON.parse(options.body) });
+      if (notification.throw) throw new Error("Network acknowledgement lost");
+      if (notification.wait) await notification.wait;
+      return Response.json(notification.body ?? { ok: true }, { status: notification.status ?? 200 });
+    }) },
   };
   const exports = {};
   const routeModule = { exports };
@@ -287,3 +312,111 @@ test("permits bounded idempotent retries without consuming new-quote email limit
 });
 
 
+
+test("Formspree receives complete bilingual quote details without internal IDs or artwork", () => {
+  const data = check({ locale: "fr", mode: "reorder", reorderReference: "PM-OLD-123", budget: 25.5,
+    budgetType: "per_item", items: [{ id: "everyday-tees", quantity: 45 }], kitRecipients: 12,
+    deliveryPlan: "multiple", marketingConsent: false }).data;
+  data.items[0].name = { en: "Everyday tees", fr: "T-shirts" };
+  const payload = formspreePayload("PM-123456ABCDEF", data, true);
+  assert.match(payload.subject, /Demande de nouvelle commande/);
+  assert.equal(payload.email, base.email);
+  assert.equal(payload.products, "45 × T-shirts [everyday-tees]");
+  assert.equal(payload.budget, "25.50 CAD — par article");
+  assert.equal(payload.kit_recipients, 12);
+  assert.equal(payload.previous_reference, "PM-OLD-123");
+  assert.equal(payload.marketing_consent, "Non");
+  assert.match(payload.artwork, /aucune pièce jointe/);
+  assert.equal("idempotencyKey" in payload, false);
+  assert.equal("artworkKey" in payload, false);
+});
+
+test("provider acceptance requires a positive JSON acknowledgement and rejects redirects", async () => {
+  const payload = formspreePayload("PM-123456ABCDEF", check().data, false);
+  const endpoint = "https://formspree.io/f/xzerbjjy";
+  assert.equal(await sendToFormspree(endpoint, payload, async (url, init) => {
+    assert.equal(url, endpoint);
+    assert.equal(init.redirect, "error");
+    assert.equal(init.headers.Accept, "application/json");
+    assert.equal(JSON.parse(init.body).email, base.email);
+    return Response.json({ ok: true });
+  }), "accepted");
+  for (const response of [Response.json({}), new Response("<html>ok</html>"), Response.json({ ok: true }, { status: 500 })]) {
+    assert.equal(await sendToFormspree(endpoint, payload, async () => response), "unknown");
+  }
+  assert.equal(await sendToFormspree(endpoint, payload, async () => Response.json({ errors: [] }, { status: 422 })), "failed");
+  assert.equal(await sendToFormspree(endpoint, payload, async () => { throw new Error("timeout"); }), "unknown");
+  assert.equal(await sendToFormspree("https://untrusted.invalid/f/test", payload, async () => { assert.fail("must not send"); }), "failed");
+});
+
+test("saves before notifying and accepted retries never send a second notification", async () => {
+  const { POST, state } = routeHarness("normal", {});
+  const payload = currentPayload();
+  const first = await POST(apiRequest(payload, { artwork: true }));
+  const result = await first.json();
+  assert.equal(first.status, 201);
+  assert.equal(result.notificationStatus, "accepted");
+  assert.equal(state.notifications.length, 1);
+  assert.equal(state.notifications[0].payload.reference, result.reference);
+  assert.equal(state.files.size, 1);
+  const replay = await (await POST(apiRequest(payload, { artwork: true }))).json();
+  assert.equal(replay.reference, result.reference);
+  assert.equal(replay.notificationStatus, "accepted");
+  assert.equal(state.notifications.length, 1);
+  assert.equal(state.records.size, 1);
+});
+
+test("definite provider rejection retains the quote and permits an unchanged retry", async () => {
+  const provider = { status: 422, body: { errors: [{ message: "Rejected" }] } };
+  const { POST, state } = routeHarness("normal", provider);
+  const payload = currentPayload();
+  const first = await (await POST(apiRequest(payload))).json();
+  assert.equal(first.ok, true);
+  assert.equal(first.notificationStatus, "failed");
+  provider.status = 200;
+  provider.body = { ok: true };
+  const second = await (await POST(apiRequest(payload))).json();
+  assert.equal(second.notificationStatus, "accepted");
+  assert.equal(second.reference, first.reference);
+  assert.equal(state.notifications.length, 2);
+  assert.equal(state.records.size, 1);
+});
+
+test("uncertain delivery and failed state acknowledgements do not cause duplicate sends", async () => {
+  for (const provider of [{ throw: true }, { status: 500 }, { failStatusWrite: true }]) {
+    const { POST, state } = routeHarness("normal", provider);
+    const payload = currentPayload();
+    const first = await (await POST(apiRequest(payload))).json();
+    assert.equal(first.ok, true);
+    assert.equal(first.notificationStatus, "unknown");
+    const second = await (await POST(apiRequest(payload))).json();
+    assert.ok(["unknown", "submitting"].includes(second.notificationStatus));
+    assert.equal(state.notifications.length, 1);
+    assert.equal(state.records.size, 1);
+  }
+});
+
+test("concurrent identical submissions share one notification claim", async () => {
+  let release;
+  const wait = new Promise(resolve => { release = resolve; });
+  const { POST, state } = routeHarness("normal", { wait });
+  const payload = currentPayload();
+  const first = POST(apiRequest(payload));
+  while (state.notifications.length === 0) await new Promise(resolve => setTimeout(resolve, 1));
+  const replay = await (await POST(apiRequest(payload))).json();
+  assert.equal(replay.notificationStatus, "submitting");
+  release();
+  assert.equal((await (await first).json()).notificationStatus, "accepted");
+  assert.equal(state.notifications.length, 1);
+});
+
+test("reconciled storage acknowledgements notify once; invalid/conflicting requests never notify", async () => {
+  const { POST, state } = routeHarness("commit_then_throw", {});
+  const payload = currentPayload();
+  assert.equal((await POST(apiRequest({ ...payload, email: "invalid" }))).status, 400);
+  assert.equal(state.notifications.length, 0);
+  const first = await (await POST(apiRequest(payload))).json();
+  assert.equal(first.notificationStatus, "accepted");
+  assert.equal((await POST(apiRequest({ ...payload, name: "Different Buyer" }))).status, 409);
+  assert.equal(state.notifications.length, 1);
+});

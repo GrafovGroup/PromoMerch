@@ -48,6 +48,8 @@ const copy = {
     unavailable: "We could not confirm your request was received. Your details are still here. Please retry, or call (833) 696-9996.",
     received: "Your request was received.",
     successNote: "Keep this reference for any follow-up. Your request is saved; an order has not been placed.",
+    notificationFailed: "Your request is saved, but its notification could not be submitted. Keep this reference and retry, or contact info@promomerch.ca:",
+    notificationUnknown: "Your request is saved, but we could not confirm its notification. Contact info@promomerch.ca with this reference rather than starting a new request:",
     referenceLabel: "Your reference", again: "START ANOTHER REQUEST",
     help: "Questions? Call", pending: "Please wait while we save your request.",
   },
@@ -87,6 +89,8 @@ const copy = {
     unavailable: "Nous n’avons pas pu confirmer la réception de votre demande. Vos renseignements sont conservés dans le formulaire. Réessayez ou appelez le (833) 696-9996.",
     received: "Votre demande a été reçue.",
     successNote: "Conservez cette référence pour tout suivi. Votre demande est enregistrée; aucune commande n’a été passée.",
+    notificationFailed: "Votre demande est enregistrée, mais sa notification n’a pas pu être transmise. Conservez cette référence et réessayez, ou écrivez à info@promomerch.ca :",
+    notificationUnknown: "Votre demande est enregistrée, mais sa notification n’a pas pu être confirmée. Écrivez à info@promomerch.ca avec cette référence au lieu de créer une autre demande :",
     referenceLabel: "Votre référence", again: "FAIRE UNE AUTRE DEMANDE",
     help: "Des questions? Appelez le", pending: "Veuillez patienter pendant l’enregistrement de votre demande.",
   },
@@ -232,11 +236,15 @@ export function QuoteExperience({ locale, mode = "quote" }: { locale: QuoteLocal
       });
       const saved: unknown = await response.json();
       if (!saved || typeof saved !== "object") throw new Error("unconfirmed");
-      const value = saved as { ok?: boolean; reference?: string; message?: string; errors?: QuoteFieldErrors };
+      const value = saved as { ok?: boolean; reference?: string; notificationStatus?: string; message?: string; errors?: QuoteFieldErrors };
       if (response.ok && value.ok === true && typeof value.reference === "string" && /^PM-[A-F0-9]{12}$/.test(value.reference)) {
-        setReference(value.reference);
-        saveItems([]);
-        setArtwork(null);
+        if (value.notificationStatus === "accepted") {
+          setReference(value.reference);
+          saveItems([]);
+          setArtwork(null);
+        } else {
+          setFormError(`${value.notificationStatus === "failed" ? t.notificationFailed : t.notificationUnknown} ${value.reference}`);
+        }
       } else {
         setErrors(value.errors && typeof value.errors === "object" ? value.errors : {});
         setFormError(typeof value.message === "string" ? value.message : t.unavailable);

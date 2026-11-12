@@ -50,8 +50,12 @@ This presentation board remains the unchanged selected visual reference. Product
 - **Language:** complete English/French page and form data. ARTICLES PROMOTIONNELS is the implemented French descriptor, retained as a translation choice for owner review.
 - **Logo:** editable reconstructed vectors preserve the 1A direction; original concept board remains byte-for-byte unchanged.
 - **Imagery:** seven generated studio collections without third-party logos, used as illustrations. Originals are source assets; WebPs are the public delivery assets.
-- **Operations:** store requests privately and show a saved reference only after persistence. Do not claim email delivery; notification_status stays not_configured until a real provider is integrated and tested.
+- **Operations:** store requests privately and show a saved reference only after persistence. Formspree processes notification details after persistence; record provider acceptance separately from inbox receipt.
 - **Privacy:** personal form fields are not persisted in browser storage. Only catalogue IDs/quantities are stored locally. Optional marketing preference is separate and defaults off.
 - **Retention:** no arbitrary deletion policy imposed. Quarantined artwork and orphan reconciliation need an owner-approved operating process before public rollout.
 
 Keep owner choices, implementation defaults and verified outcomes distinct. The current implementation does not authorize a brand-domain cutover, announcements or live legacy redirects.
+
+## November 12, 2026 — Formspree integration
+
+The owner chose info@promomerch.ca and supplied https://formspree.io/f/xzerbjjy. Preserve React/Vinext and private D1/R2 storage; forward notifications server-side after saving, with no new client SDK or duplicate submission path. Artwork remains private. Publication remains owner-private.

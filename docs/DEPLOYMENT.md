@@ -32,7 +32,7 @@ Use the installed Sites skill's current workflow and helper paths. Here, `<sites
 
 Sites applies pending hosted D1 migrations before uploading the Worker. Local preview and production storage are separate. Keep build archives free of customer submissions, artwork, local databases, secrets and checkout-local tool state.
 
-Do not mark quote intake verified solely because the build or deployment succeeded. Record controlled checks for a persisted quote, private artwork, retry behavior and access restrictions separately. Email delivery remains unconfigured unless an integration and inbox test are explicitly completed.
+Do not mark quote intake verified solely because the build or deployment succeeded. Record controlled checks for a persisted quote, private artwork, retry behavior and access restrictions separately. Formspree acceptance and actual inbox receipt must be checked separately; see OPERATIONS.md.
 
 ## Rollback
 
@@ -42,7 +42,7 @@ A Worker rollback does not automatically undo D1 migrations, delete newer quote 
 
 ## Environment and future hosting
 
-[.env.example](../.env.example) intentionally contains comments only. D1 and R2 are platform bindings, not working connection strings to paste into a local environment file. Mail credentials and an email outbox are not implemented.
+[.env.example](../.env.example) documents FORMSPREE_ENDPOINT. D1 and R2 are platform bindings, not working connection strings to paste into a local environment file. Formspree needs no mail credential; configure the supplied endpoint through Sites and verify its recipient in the provider dashboard.
 
 This release targets Cloudflare Workers with D1/R2. Moving it to WHC requires a supported server runtime, database/storage adapters, a trustworthy source-IP boundary, and a tested migration/deployment process. It is not a drop-in PHP or static upload. See [OPERATIONS.md](OPERATIONS.md) for those requirements and the separate notification/retention work.
 

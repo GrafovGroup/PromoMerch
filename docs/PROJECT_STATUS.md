@@ -18,7 +18,7 @@
 | Imagery | IMPLEMENTED / REVIEWED | Seven generated illustrative collections; originals and responsive WebPs preserved |
 | Quote endpoint | IMPLEMENTED / LOCAL PASS | Same-origin POST, D1 persistence, server validation and idempotency |
 | Artwork upload | IMPLEMENTED / LOCAL PASS | Small PNG upload saved with private quarantined status in R2/D1 |
-| Notifications | IMPLEMENTED / LOCAL PASS | Formspree endpoint supplied by owner; 22 regression tests pass. Hosted acceptance and inbox receipt recorded separately below. |
+| Notifications | HOSTED PROVIDER ACCEPTANCE PASS | EN quote and FR reorder accepted by Formspree; identical retries preserve accepted state. Inbox receipt awaits owner confirmation. See FORMSPREE_VERIFICATION.md. |
 | Form UI | LOCAL PASS | French validation, shortlist continuity/quantity changes, EN/FR saved confirmations, mobile upload flow |
 | Responsive/browser review | PASS for checked views | Desktop 1363 px, mobile frame 390 px, tablet frame 768 px; representative templates checked |
 | Private review host | CONFIGURED | Existing project appgprj_6af541e1e5788191adfbb1e9d18c53cd; use its deployment record for publish outcome |

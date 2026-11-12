@@ -336,12 +336,12 @@ test("provider acceptance requires a positive JSON acknowledgement and rejects r
   const endpoint = "https://formspree.io/f/xzerbjjy";
   assert.equal(await sendToFormspree(endpoint, payload, async (url, init) => {
     assert.equal(url, endpoint);
-    assert.equal(init.redirect, "error");
+    assert.equal(init.redirect, "manual");
     assert.equal(init.headers.Accept, "application/json");
     assert.equal(JSON.parse(init.body).email, base.email);
     return Response.json({ ok: true });
   }), "accepted");
-  for (const response of [Response.json({}), new Response("<html>ok</html>"), Response.json({ ok: true }, { status: 500 })]) {
+  for (const response of [Response.json({}), new Response("<html>ok</html>"), Response.json({ ok: true }, { status: 500 }), new Response(null, { status: 302, headers: { Location: "https://untrusted.invalid" } })]) {
     assert.equal(await sendToFormspree(endpoint, payload, async () => response), "unknown");
   }
   assert.equal(await sendToFormspree(endpoint, payload, async () => Response.json({ errors: [] }, { status: 422 })), "failed");

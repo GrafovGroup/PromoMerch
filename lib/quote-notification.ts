@@ -52,13 +52,20 @@ export async function sendToFormspree(
   try {
     const response = await fetcher(endpoint, {
       method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify(payload), redirect: "error", signal: AbortSignal.timeout(10000),
+      // Workers supports manual/follow, but rejects redirect: "error" before sending.
+      body: JSON.stringify(payload), redirect: "manual", signal: AbortSignal.timeout(10000),
     });
     if (response.status >= 400 && response.status < 500) return "failed";
-    if (!response.ok) return "unknown";
+    if (!response.ok) {
+      console.warn("quote_notification_unconfirmed", { kind: "http", status: response.status });
+      return "unknown";
+    }
     const result: unknown = await response.json();
-    return result && typeof result === "object" && "ok" in result && result.ok === true ? "accepted" : "unknown";
-  } catch {
+    if (result && typeof result === "object" && "ok" in result && result.ok === true) return "accepted";
+    console.warn("quote_notification_unconfirmed", { kind: "acknowledgement", status: response.status });
+    return "unknown";
+  } catch (error) {
+    console.warn("quote_notification_unconfirmed", { kind: "transport", error: error instanceof Error ? error.name : "UnknownError" });
     // A timeout or broken acknowledgement may occur after acceptance. Do not
     // automatically resend without reconciling in Formspree by quote reference.
     return "unknown";
@@ -87,6 +94,7 @@ export async function notifySavedQuote(
       .bind(status, reference).run();
     return status;
   } catch {
+    console.warn("quote_notification_unconfirmed", { kind: "notification_state" });
     // Persistence remains successful even if notification processing fails.
     return "unknown";
   }
